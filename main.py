@@ -9,12 +9,24 @@ GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
 WORK_MIN = 1 
-SHORT_BREAK_MIN = 5
+SHORT_BREAK_MIN = 1
 LONG_BREAK_MIN = 20
 REPS = 0
+timer = None
+
+#TIMER RESET
+
+def reset_time():
+
+    global REPS
+
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text= "00:00")
+    label.config(text="Timer", fg=GREEN)
+    REPS = 0
+    check_mark.config(text="")
 
 
-#TIMER SETUP
 #TIMER MECHANISM
 
 def start_timer():
@@ -41,6 +53,10 @@ def start_timer():
 #COUNTDOWN MECHANISM
 
 def count_down(count):
+
+    global REPS
+    global CHECK_MARK
+
     count_min = math.floor((count/60))
     count_secs = count % 60
 
@@ -49,9 +65,14 @@ def count_down(count):
 
     canvas.itemconfig(timer_text, text= f"{count_min}:{count_secs}")
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        global timer
+        timer = window.after(1000, count_down, count - 1)
     else:
         start_timer()
+        if REPS % 2 == 0:
+            CHECK_MARK += "✓"
+            check_mark.config(text=CHECK_MARK)
+
 
 
 #UI MECHANISM
@@ -74,7 +95,8 @@ label = tkinter.Label(text="TIMER", font=(FONT_NAME, 50, "bold"), fg=GREEN, bg=Y
 label.grid(row=0, column=1)
 
 #CHECK MARK
-check_mark = tkinter.Label(text="✓", font=(FONT_NAME, 15, "normal"), fg=GREEN, bg=YELLOW)
+CHECK_MARK = ""
+check_mark = tkinter.Label(text=CHECK_MARK, font=(FONT_NAME, 15, "normal"), fg=GREEN, bg=YELLOW)
 check_mark.grid(row=3, column=1)
 
 
@@ -84,7 +106,7 @@ start_button.config(width=5, height=1)
 start_button.grid(row=2, column=0)
 
 #RESET BUTTON
-reset_button = tkinter.Button(text="Reset", highlightthickness=0)
+reset_button = tkinter.Button(text="Reset", highlightthickness=0, command=reset_time)
 reset_button.config(width=5, height=1)
 reset_button.grid(row=2, column=2)
 
