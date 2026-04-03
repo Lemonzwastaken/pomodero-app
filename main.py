@@ -67,8 +67,9 @@ def open_settings():
  
     work = tkinter.simpledialog.askinteger(
         "Settings", "Work duration (minutes):",
-        initialvalue=WORK_MIN, minvalue=1, maxvalue=120
+        initialvalue=WORK_MIN, minvalue=1, maxvalue=120,
     )
+
     if work is None:
         return
     short = tkinter.simpledialog.askinteger(
