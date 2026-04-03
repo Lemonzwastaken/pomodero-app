@@ -8,16 +8,35 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
+WORK_MIN = 1 
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
+REPS = 0
 
 
 #TIMER SETUP
 #TIMER MECHANISM
 
 def start_timer():
-    count_down(970)
+    global REPS
+    REPS += 1
+
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
+    
+    if REPS % 8 == 0:
+        count_down(long_break_sec)
+        label.config(fg=RED, text="Break")
+    
+    elif REPS % 2 == 0:
+        count_down(short_break_sec)
+        label.config(fg=PINK, text="Break")
+
+    else:
+        count_down(work_sec)
+        label.config(fg=GREEN, text="Work")
+    
 
 #COUNTDOWN MECHANISM
 
@@ -31,6 +50,8 @@ def count_down(count):
     canvas.itemconfig(timer_text, text= f"{count_min}:{count_secs}")
     if count > 0:
         window.after(1000, count_down, count - 1)
+    else:
+        start_timer()
 
 
 #UI MECHANISM
