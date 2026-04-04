@@ -55,7 +55,6 @@ def pause_resume():
         paused = True
         pause_button.config(text="Resume")
     else:
-        # Resume: restart countdown from where we left off
         paused = False
         pause_button.config(text="Pause")
         count_down(remaining_count)
